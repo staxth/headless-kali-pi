@@ -1,8 +1,9 @@
 # headless-kali-pi
-Confifgure kali 2020.4 as headless for rpi4b
+Confifgure kali 2020.4 as headless on RasPi 4b
 
+#### RasPi 4b /boot/config.txt
 
-# VNC 
+#### VNC 
 Install x11vnc:
 ```
 sudo apt update
