@@ -1,0 +1,13 @@
+[Unit]
+Description=start X11VNC at startup
+After=multi-user.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/x11vnc -display :0 -auth guess -rfbauth /home/kali/.vnc/passwd -rfbport 5900 -listen 127.0.0.1 -xkb -quiet -forever -o /var/log/x11vnc.log
+ExecStop=/usr/bin/pkill x11vnc
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
