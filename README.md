@@ -2,7 +2,7 @@
 Confifgure kali 2020.4 as headless on RasPi 4b
 
 #### RasPi 4b /boot/config.txt
-[config.txt](../blob/main/config.txt)
+[config.txt](../main/config.txt)
 
 #### VNC 
 Install x11vnc:
