@@ -11,7 +11,17 @@ sudo apt update
 sudo apt install x11vnc
 ```
 
-Create a service for vnc
+Create a service for vnc:
+
+`nano /etc/systemd/system/x11vnc.service`
+
+Paste contents [x11vnc.service](../main/x11vnc.service)
+
+Start service `sudo systemctl start xllvnc.service`
+
+
+
+
 
 
 
