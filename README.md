@@ -1,7 +1,7 @@
 # headless-kali-pi
 Confifgure kali 2020.4 as headless on RasPi 4b
 
-#### RasPi 4b /boot/config.txt
+### RasPi 4b /boot/config.txt
 
 In order for OS to proceed past bootloader on headless HDMI output needs to be forced. The following settings cause HDMI to output even if no monitor is detected. [See here](https://www.raspberrypi.org/documentation/configuration/config-txt/video.md)
 
@@ -24,7 +24,8 @@ hdmi_mode=16
 See [config.txt](../main/config.txt)
 
 
-#### Network
+### Network
+The following configurations ensure that a Wifi connection to your chosen network is established on startup
 
 1. Add entry for wlan0 in `/etc/network/interfaces`
 
@@ -48,20 +49,25 @@ plugins=ifupdown,keyfile
 [ifupdown]
 managed=true
 ```
+3. Either create a WiFi connection manually `my.nmconnection` in `/etc/NetworkManager/system-connections`
+or in GUI.
+
+4. In GUI once connection is established go to `Advanced Network Connections > [YOUR CONNECTION] > Edit the selected connection (cog icon) > General tab` and make sure `All users may connect to this network` is checked.
 
 
 
+### VNC 
+The following configuration creates a VNC server that listens on localhost and is activated on startup. Connection to VNC server is established by way of SSH tunnel on client machine.
 
-#### VNC 
 Install x11vnc:
 ```
 sudo apt update
 sudo apt install x11vnc
 ```
 
-Create a service for vnc:
+Create a service for VNC:
 
-Copy [x11vnc.service](../main/x11vnc.service) to `/etc/systemd/system/`
+Copy [x11vnc.service](../main/x11vnc.service) to `/etc/systemd/system/` [Please note that you may need to adjust flags depending on your requirements]
 
 Start service: `sudo systemctl start xllvnc.service`
 Check status: `sudo systemctl status x11vnc.service`
