@@ -5,7 +5,7 @@ Confifgure kali 2020.4 as headless on RasPi 4b
 
 In order for OS to proceed past bootloader on headless HDMI output needs to be forced. The following settings cause HDMI to output even if no monitor is detected. [See here](https://www.raspberrypi.org/documentation/configuration/config-txt/video.md)
 
-1. uncomment `hdmi_force_hotplug=1`in `/boot/config.txt`
+1. Uncomment `hdmi_force_hotplug=1` in `/boot/config.txt`
 
 2. A display resolution also needs to be set:
 
@@ -22,6 +22,35 @@ hdmi_mode=16
 ```
 
 See [config.txt](../main/config.txt)
+
+
+#### Network
+
+1. Add entry for wlan0 in `/etc/network/interfaces`
+
+```
+auto lo
+iface lo inet loopback
+
+auto eth0
+allow-hotplug eth0
+iface eth0 inet dhcp
+
+auto wlan0
+iface wlan0 inet dhcp
+```
+
+2. Set `[ifupdown]` in `/etc/NetworkManager/NetworkManager.conf` to `managed=true`
+```
+[main]
+plugins=ifupdown,keyfile
+
+[ifupdown]
+managed=true
+```
+
+
+
 
 #### VNC 
 Install x11vnc:
