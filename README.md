@@ -1,6 +1,7 @@
 # headless-kali-pi
 Confifgure kali 2020.4 as headless on RasPi 4b
 
+
 ### RasPi 4b /boot/config.txt
 
 In order for OS to proceed past bootloader on headless HDMI output needs to be forced. The following settings cause HDMI to output even if no monitor is detected. [See here](https://www.raspberrypi.org/documentation/configuration/config-txt/video.md)
@@ -97,7 +98,7 @@ depending on your flag settings you may need to provide the vcn password that yo
 
 
 ### Autologin
-This is neither recommended (for obvious reasons) or required but if you so desire autologin can be acheived by modifying
+This is neither recommended (for obvious reasons) or required, but if you so desire autologin can be enabled by modifying
 `/etc/lightdm/lightdm.conf` and changing the following line in Seat
 ```
 [Seat:*]
@@ -108,6 +109,16 @@ This is neither recommended (for obvious reasons) or required but if you so desi
 #autologin-session=
 #exit-on-failure=false
 ```
+No other changes should be required.
+
+
+### Test
+
+Once the above has been configured you should have a working headless Raspi system with VNC on startup. 
+Further changes / steps will be added as needed.
+
+
+
 
 
 
