@@ -1,20 +1,26 @@
 # headless-kali-pi
 Confifgure kali 2020.4 as headless on RPi4b
 
+This configuration was tested and works with:
+- Raspberry Pi Model 4B 4GB
+- [Kali Linux RaspberryPi 2 (v1.2), 3, 4 and 400 (64-Bit) (img.xz)](https://www.offensive-security.com/kali-linux-arm-images/)
+
+Successful configuration results in a RPi4 running headless (or head on!) kali linux with a secure VNC service enabled at startup.  
+
 
 ### RPi4b /boot/config.txt
 
-In order for OS to proceed past bootloader and load a desktop on headless RPi4 the device must be forced to output HDMI. 
+In order for OS to proceed past bootloader and load into desktop on headless RPi4 the device must be forced to output HDMI. 
 
 see thread [here](https://www.raspberrypi.org/forums/viewtopic.php?t=253312)
 
-> "The reason is that by default (RPi4), if no screen is connected at boot then a display device is not created. Without a 
+> The reason is that by default (RPi4), if no screen is connected at boot then a display device is not created. Without a 
 > display device the GUI desktop does not start so any program that requires GUI will not start. Other RPi models did not have that issue 
-> because they would fall back to composite mode if no HDMI was connected."
+> because they would fall back to composite mode if no HDMI was connected.
 >
 > klricks
 
-The following settings cause HDMI to output even if no monitor is detected. [See here](https://www.raspberrypi.org/documentation/configuration/config-txt/video.md)
+The following setting cause HDMI to output even if no monitor is detected. [See here](https://www.raspberrypi.org/documentation/configuration/config-txt/video.md)
 
 1. Uncomment `hdmi_force_hotplug=1` in `/boot/config.txt`
 
@@ -26,17 +32,16 @@ hdmi_group=<YOUR VALUE>
 hdmi_mode=<YOUR VALUE>
 ```
 i.e. for 1080p @ 60hz
-
 ```
 hdmi_group=1
 hdmi_mode=16
 ```
-
 See [config.txt](../main/config.txt)
 
+Once these changes have been made the RPi4 will boot to login screen (regardless of whether a screen is connected)
 
 ### Network
-The following configurations ensure that a Wifi connection to your chosen network is established on startup
+The following configurations ensure that a Wifi connection to your chosen network is established on startup.
 
 1. Add entry for wlan0 in `/etc/network/interfaces`
 
@@ -51,7 +56,6 @@ iface eth0 inet dhcp
 auto wlan0
 iface wlan0 inet dhcp
 ```
-
 2. Set `[ifupdown]` in `/etc/NetworkManager/NetworkManager.conf` to `managed=true`
 ```
 [main]
@@ -60,22 +64,20 @@ plugins=ifupdown,keyfile
 [ifupdown]
 managed=true
 ```
-3. Either create a WiFi connection manually `my.nmconnection` in `/etc/NetworkManager/system-connections`
-or in GUI.
+3. Either create a WiFi connection manually: `<YOUR CONNECTION>.nmconnection` in `/etc/NetworkManager/system-connections`
+or via GUI.
 
-4. In GUI once connection is established go to `Advanced Network Connections > [YOUR CONNECTION] > Edit the selected connection (cog icon) > General tab` and make sure `All users may connect to this network` is checked.
-
+4. In GUI once a connection is established go to `Advanced Network Connections > [YOUR CONNECTION] > Edit the selected connection (cog icon) > General tab` and make sure `All users may connect to this network` is checked.
 
 
 ### VNC 
-The following configuration creates a VNC server that listens on localhost and is activated on startup. Connection to VNC server is established by way of SSH tunnel on client machine.
+The following configuration creates a VNC server that listens on localhost and is activated on startup. Connection to the VNC server is established by way of SSH tunnel on client machine.
 
 Install x11vnc:
 ```
 sudo apt update
 sudo apt install x11vnc
 ```
-
 1. Create a service for VNC:
 
 Copy [x11vnc.service](../main/x11vnc.service) to `/etc/systemd/system/` [Please note that you may need to adjust flags depending on your requirements] A password for the service can be created with `vncpasswd` 
@@ -101,7 +103,7 @@ To connect to service install a viewer on client machine and set up a SSH tunnel
 
 `ssh (-i ~/.ssh/<YOUR KEY>) -L 5900:localhost:5900 -N f kali@<YOUR IP>`
 
-You can then access the remote desktop by opening a connection to localhost on the client machine i.e. `open vnc://localhost:5900` depending on your flag settings you may need to provide the vcn password that you created earlier.
+You can then access the remote desktop by opening a connection to localhost on the client machine i.e. `open vnc://localhost:5900` depending on your flag settings you may need to provide the vnc password that you created earlier.
 
 
 ### Autologin
@@ -118,10 +120,9 @@ This is neither recommended (for obvious reasons) or required, but if you so des
 ```
 No other changes should be required.
 
-
 ### Test
 
-Once the above has been configured you should have a working headless Raspi system with VNC on startup. 
+Once the above has been configured you should have a working RPi4 headless kali build with VNC and network support on startup. 
 Further changes / steps will be added as needed.
 
 
