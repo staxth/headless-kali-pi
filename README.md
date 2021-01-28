@@ -68,9 +68,7 @@ sudo apt install x11vnc
 
 1. Create a service for VNC:
 
-Copy [x11vnc.service](../main/x11vnc.service) to `/etc/systemd/system/` [Please note that you may need to adjust flags depending on your requirements]
-
-A password for the service can be created with `vncpasswd` 
+Copy [x11vnc.service](../main/x11vnc.service) to `/etc/systemd/system/` [Please note that you may need to adjust flags depending on your requirements] A password for the service can be created with `vncpasswd` 
 
 2. Start service: `sudo systemctl start xllvnc.service`
 
@@ -93,8 +91,7 @@ To connect to service install a viewer on client machine and set up a SSH tunnel
 
 `ssh (-i ~/.ssh/<YOUR KEY>) -L 5900:localhost:5900 -N f kali@<YOUR IP>`
 
-You can then access the remote desktop by opening a connectio to localhost on the client machine i.e. `open vnc://localhost:5900`
-depending on your flag settings you may need to provide the vcn password that you created earlier.
+You can then access the remote desktop by opening a connection to localhost on the client machine i.e. `open vnc://localhost:5900` depending on your flag settings you may need to provide the vcn password that you created earlier.
 
 
 ### Autologin
