@@ -68,6 +68,7 @@ The following configurations ensure that a Wifi connection to your chosen networ
      [ifupdown]
      managed=true
      ```
+
 3. Either create a WiFi connection manually: `<YOUR CONNECTION>.nmconnection` in `/etc/NetworkManager/system-connections`
 or via GUI.
 
@@ -89,8 +90,8 @@ Copy [x11vnc.service](../main/x11vnc.service) to `/etc/systemd/system/` [Please 
 2. Start service: `sudo systemctl start xllvnc.service`
 
 3. Check status: `sudo systemctl status x11vnc.service`
-If all goes well you should receive the following status message:
 
+If the service starts succesfully `systemctl` will display the following:
 ```
 ● x11vnc.service - start X11VNC at startup
      Loaded: loaded (/etc/systemd/system/x11vnc.service; enabled; vendor preset: disabled)
@@ -111,7 +112,7 @@ You can then access the remote desktop by opening a connection to localhost on t
 
 
 ### Autologin
-This is neither recommended (for obvious reasons) or required, but if you so desire autologin can be enabled by modifying
+This is neither required nor secure, but if you so desire autologin can be enabled by modifying
 `/etc/lightdm/lightdm.conf` and changing the following line in Seat
 ```
 [Seat:*]
