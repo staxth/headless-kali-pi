@@ -2,6 +2,27 @@
 Confifgure kali 2020.4 as headless on RasPi 4b
 
 #### RasPi 4b /boot/config.txt
+
+In order for OS to proceed past bootloader on headless HDMI output needs to be forced. The following settings cause HDMI to output even if no monitor is detected. [See here](https://www.raspberrypi.org/documentation/configuration/config-txt/video.md)
+
+uncomment `hdmi_force_hotplug=1`in `/boot/config.txt`
+
+A display resolution also needs to be set:
+
+uncomment following 2 lines in `/boot/config.txt` and set as required (see hdmi_group & hdmi_mode in above link)
+```
+hdmi_group=<YOUR VALUE>
+hdmi_mode=<YOUR VALUE>
+```
+i.e. for 1080p @ 60hz
+
+```
+hdmi_group=1
+hdmi_mode=16
+```
+
+
+
 [config.txt](../main/config.txt)
 
 #### VNC 
@@ -13,12 +34,10 @@ sudo apt install x11vnc
 
 Create a service for vnc:
 
-`sudo nano /etc/systemd/system/x11vnc.service`
+Copy [x11vnc.service](../main/x11vnc.service) to `/etc/systemd/system/`
 
-Paste contents of [x11vnc.service](../main/x11vnc.service) into editor
-
-Start service `sudo systemctl start xllvnc.service`
-Check status `sudo systemctl status x11vnc.service`
+Start service: `sudo systemctl start xllvnc.service`
+Check status: `sudo systemctl status x11vnc.service`
 
 If all goes well you should receive the following status message:
 
@@ -32,6 +51,7 @@ If all goes well you should receive the following status message:
      CGroup: /system.slice/x11vnc.service
              └─737 /usr/bin/x11vnc -display :0 -auth guess -rfbauth /home/kali/.vnc/passwd -rfbport 5900 -listen 127.0.0.1 -xkb -quiet -forever -o /var/log/x11>
 ```
+Enable VNC on boot: `sudo systemctl enable x11vnc.service`
 
 
 
