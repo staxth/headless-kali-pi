@@ -1,10 +1,20 @@
 # headless-kali-pi
-Confifgure kali 2020.4 as headless on RasPi 4b
+Confifgure kali 2020.4 as headless on RPi4b
 
 
-### RasPi 4b /boot/config.txt
+### RPi4b /boot/config.txt
 
-In order for OS to proceed past bootloader on headless HDMI output needs to be forced. The following settings cause HDMI to output even if no monitor is detected. [See here](https://www.raspberrypi.org/documentation/configuration/config-txt/video.md)
+In order for OS to proceed past bootloader and load a desktop on headless RPi4 the device must be forced to output HDMI. 
+
+see thread [here](https://www.raspberrypi.org/forums/viewtopic.php?t=253312)
+
+> "The reason is that by default (RPi4), if no screen is connected at boot then a display device is not created. Without a 
+> display device the GUI desktop does not start so any program that requires GUI will not start. Other RPi models did not have that issue 
+> because they would fall back to composite mode if no HDMI was connected."
+>
+> klricks
+
+The following settings cause HDMI to output even if no monitor is detected. [See here](https://www.raspberrypi.org/documentation/configuration/config-txt/video.md)
 
 1. Uncomment `hdmi_force_hotplug=1` in `/boot/config.txt`
 
