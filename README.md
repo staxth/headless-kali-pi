@@ -5,12 +5,34 @@ This configuration was tested and works with:
 - Raspberry Pi Model 4B 4GB
 - [Kali Linux RaspberryPi 2 (v1.2), 3, 4 and 400 (64-Bit) (img.xz)](https://www.offensive-security.com/kali-linux-arm-images/)
 
+This configuration results in a RPi4 running headless (or headed) kali linux with a secure VNC service enabled at startup. 
+
+### Contents
+ 1. Installation
+ 2. Requirements
+ 3. RPi4b /boot/config.txt
+ 4. Network
+ 5. VNC
+ 6. Autologin (optional)
+ 7. Setup Script (TBC)
 
 
- This configuration results in a RPi4 running headless (or headed) kali linux with a secure VNC service enabled at startup.  
+### 1. Installation 
+[Kali Linux on RPi](https://www.kali.org/docs/arm/kali-linux-raspberry-pi/)
+
+I used [Raspberry Pi Imager](https://www.raspberrypi.org/software/) to image Kali to the sd card.
 
 
-### RPi4b /boot/config.txt
+### 2. Requirements
+
+As it is not possible to `ssh` into the RPi until steps 3 & 4 are complete you will need a way to modify the sd card contents.
+
+If using the RPi in a headed scenario then all configurations can be made while running. Alternativly configurations can be made 
+by mounting both the `/boot` and `/root` paritions of the sd card on a linux system. `/boot/config.txt` is located in `/boot` and the Kali root
+file system in `/root`.
+
+
+### 3. RPi4b /boot/config.txt
 
 In order for OS to proceed past bootloader and load into desktop on headless RPi4 the device must be forced to output HDMI. 
 
@@ -22,7 +44,7 @@ see thread [here](https://www.raspberrypi.org/forums/viewtopic.php?t=253312)
 >
 > klricks
 
-The following setting cause HDMI to output even if no monitor is detected.[Video options in config.txt](https://www.raspberrypi.org/documentation/configuration/config-txt/video.md)
+The following setting forces HDMI to output even if no monitor is detected. [Video options in config.txt](https://www.raspberrypi.org/documentation/configuration/config-txt/video.md)
 
 1. Uncomment `hdmi_force_hotplug=1` in `/boot/config.txt`
 
@@ -43,7 +65,8 @@ The following setting cause HDMI to output even if no monitor is detected.[Video
 
 Once these changes have been made the RPi4 will boot to login screen in both headless and headed scenarios.
 
-### Network
+
+### 4. Network
 The following configurations ensure that a Wifi connection to your chosen network is established on startup.
 
 1. Add entry for wlan0 in `/etc/network/interfaces`
@@ -75,7 +98,7 @@ or via GUI.
 4. In both cases once a connection is established use GUI (headed )and go to `Advanced Network Connections > [YOUR CONNECTION] > Edit the selected connection (cog icon) > General tab` and make sure `All users may connect to this network` is checked.
 
 
-### VNC 
+### 5. VNC 
 The following configuration creates a VNC server that listens on localhost and is activated on startup. Connection to the VNC server is established by way of SSH tunnel on client machine.
 
 Install x11vnc:
@@ -111,7 +134,7 @@ To connect to service install a viewer on client machine and set up a SSH tunnel
 You can then access the remote desktop by opening a connection to localhost on the client machine i.e. `open vnc://localhost:5900` depending on your flag settings you may need to provide the vnc password that you created earlier.
 
 
-### Autologin
+### 6. Autologin (optional)
 This is neither required nor secure, but if you so desire autologin can be enabled by modifying
 `/etc/lightdm/lightdm.conf` and changing the following line in Seat
 ```
