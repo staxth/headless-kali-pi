@@ -5,7 +5,9 @@ This configuration was tested and works with:
 - Raspberry Pi Model 4B 4GB
 - [Kali Linux RaspberryPi 2 (v1.2), 3, 4 and 400 (64-Bit) (img.xz)](https://www.offensive-security.com/kali-linux-arm-images/)
 
-Successful configuration results in a RPi4 running headless (or head on!) kali linux with a secure VNC service enabled at startup.  
+
+
+ This configuration results in a RPi4 running headless (or headed) kali linux with a secure VNC service enabled at startup.  
 
 
 ### RPi4b /boot/config.txt
@@ -20,54 +22,56 @@ see thread [here](https://www.raspberrypi.org/forums/viewtopic.php?t=253312)
 >
 > klricks
 
-The following setting cause HDMI to output even if no monitor is detected. [See here](https://www.raspberrypi.org/documentation/configuration/config-txt/video.md)
+The following setting cause HDMI to output even if no monitor is detected.[Video options in config.txt](https://www.raspberrypi.org/documentation/configuration/config-txt/video.md)
 
 1. Uncomment `hdmi_force_hotplug=1` in `/boot/config.txt`
 
 2. A display resolution also needs to be set:
 
-uncomment following 2 lines in `/boot/config.txt` and set as required (see hdmi_group & hdmi_mode in above link)
-```
-hdmi_group=<YOUR VALUE>
-hdmi_mode=<YOUR VALUE>
-```
-i.e. for 1080p @ 60hz
-```
-hdmi_group=1
-hdmi_mode=16
-```
-See [config.txt](../main/config.txt)
+     Uncomment following 2 lines in `/boot/config.txt` and set as required (see hdmi_group & hdmi_mode in above link)
+     ```
+     hdmi_group=<YOUR VALUE>
+     hdmi_mode=<YOUR VALUE>
+     ```
+     i.e. for 1080p @ 60hz
+     ```
+     hdmi_group=1
+     hdmi_mode=16
+     ```
 
-Once these changes have been made the RPi4 will boot to login screen (regardless of whether a screen is connected)
+     See [config.txt](../main/config.txt) in repo for working example.
+
+Once these changes have been made the RPi4 will boot to login screen in both headless and headed scenarios.
 
 ### Network
 The following configurations ensure that a Wifi connection to your chosen network is established on startup.
 
 1. Add entry for wlan0 in `/etc/network/interfaces`
 
-```
-auto lo
-iface lo inet loopback
+     ```
+     auto lo
+     iface lo inet loopback
 
-auto eth0
-allow-hotplug eth0
-iface eth0 inet dhcp
-
-auto wlan0
-iface wlan0 inet dhcp
-```
+     auto eth0
+     allow-hotplug eth0
+     iface eth0 inet dhcp
+     
+     # Added lines
+     auto wlan0 
+     iface wlan0 inet dhcp 
+     ```
 2. Set `[ifupdown]` in `/etc/NetworkManager/NetworkManager.conf` to `managed=true`
-```
-[main]
-plugins=ifupdown,keyfile
+     ```
+     [main]
+     plugins=ifupdown,keyfile
 
-[ifupdown]
-managed=true
-```
+     [ifupdown]
+     managed=true
+     ```
 3. Either create a WiFi connection manually: `<YOUR CONNECTION>.nmconnection` in `/etc/NetworkManager/system-connections`
 or via GUI.
 
-4. In GUI once a connection is established go to `Advanced Network Connections > [YOUR CONNECTION] > Edit the selected connection (cog icon) > General tab` and make sure `All users may connect to this network` is checked.
+4. In both cases once a connection is established use GUI (headed )and go to `Advanced Network Connections > [YOUR CONNECTION] > Edit the selected connection (cog icon) > General tab` and make sure `All users may connect to this network` is checked.
 
 
 ### VNC 
