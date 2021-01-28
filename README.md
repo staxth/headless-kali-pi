@@ -65,13 +65,15 @@ sudo apt update
 sudo apt install x11vnc
 ```
 
-Create a service for VNC:
+1. Create a service for VNC:
 
 Copy [x11vnc.service](../main/x11vnc.service) to `/etc/systemd/system/` [Please note that you may need to adjust flags depending on your requirements]
 
-Start service: `sudo systemctl start xllvnc.service`
-Check status: `sudo systemctl status x11vnc.service`
+A password for the service can be created with `vncpasswd` 
 
+2. Start service: `sudo systemctl start xllvnc.service`
+
+3. Check status: `sudo systemctl status x11vnc.service`
 If all goes well you should receive the following status message:
 
 ```
@@ -84,11 +86,28 @@ If all goes well you should receive the following status message:
      CGroup: /system.slice/x11vnc.service
              └─737 /usr/bin/x11vnc -display :0 -auth guess -rfbauth /home/kali/.vnc/passwd -rfbport 5900 -listen 127.0.0.1 -xkb -quiet -forever -o /var/log/x11>
 ```
-Enable VNC on boot: `sudo systemctl enable x11vnc.service`
+4. Enable VNC on boot: `sudo systemctl enable x11vnc.service`
+
+To connect to service install a viewer on client machine and set up a SSH tunnel:
+
+`ssh (-i ~/.ssh/<YOUR KEY>) -L 5900:localhost:5900 -N f kali@<YOUR IP>`
+
+You can then access the remote desktop by opening a connectio to localhost on the client machine i.e. `open vnc://localhost:5900`
+depending on your flag settings you may need to provide the vcn password that you created earlier.
+
+
+### Autologin
+This is neither recommended (for obvious reasons) or required but if you so desire autologin can be acheived by modifying
+`/etc/lightdm/lightdm.conf` and changing the following line in Seat
+```
+[Seat:*]
+...
+#autologin-user= << uncomment and change to autologin-user=kali
+#autologin-user-timeout=0
+#autologin-in-background=false
+#autologin-session=
+#exit-on-failure=false
+```
 
 
 
-
-
-
-`ssh -i ~/.ssh/<YOUR KEY> -L 5900:localhost:5900 -N f kali@<YOUR IP>`
