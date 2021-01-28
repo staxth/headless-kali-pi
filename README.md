@@ -1,5 +1,6 @@
 # headless-kali-pi
-Confifgure kali 2020.4 as headless on RPi4b
+
+Configure kali 2020.4 headless/headed on RPi4b
 
 This configuration was tested and works with:
 - Raspberry Pi Model 4B 4GB
